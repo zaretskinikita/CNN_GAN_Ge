@@ -14,27 +14,29 @@ class Parameters:
    random_seed: int = 99
    model_type: str = 'pca' # or 'wgan'
 
-
    # PCA-GAN parameters 
+   if model_type == 'pca':
       ## Model parameters
-   seq_len: int = 94 # number of components for PCA
-   random_dim: int = 23 # random dimension, from which the Generator model starts
-   
+      seq_len: int = 94 # number of components for PCA
+      random_dim: int = 23 # random dimension, from which the Generator model starts
+         
       ## Training parameters
-   epochs: int = 119
-   batch_size: int = 128
-   lr: float = 0.03453234251828275
+      epochs: int = 119
+      batch_size: int = 128
+      lr: float = 0.03453234251828275
 
-   # # WGAN parameters 
-   #    ## Model parameters
-   # init_len = 5000 # initial space
-   # seq_len = init_len // 16 # encoded space
-   # random_dim = 32  # latent space for the generator model
-   #    ## Training parameters
-   # batch_size = 128
-   # lr_wgan = 1e-4 # learning rate
-   # lr_auto = 1e-4
-   # epochs_autoen = 50 #epochs to train autoencoder
-   # ITERS = 1000 # iterations to train WGAN
-   # CRITIC_ITERS = 5
-   # LAMBDA = 10 # penalty
+   # WGAN parameters 
+   elif model_type == 'wgan':
+      ## Model parameters
+      init_len = 5000 # initial space
+      seq_len = init_len // 16 # encoded space
+      random_dim = 32  # latent space for the generator model
+         
+      ## Training parameters
+      batch_size = 128
+      lr_wgan = 1e-4 # learning rate
+      lr_auto = 1e-4
+      epochs_autoen = 50 #epochs to train autoencoder
+      ITERS = 1000 # iterations to train WGAN
+      CRITIC_ITERS = 5
+      LAMBDA = 10 # penalty
