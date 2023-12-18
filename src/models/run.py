@@ -115,11 +115,9 @@ class Run:
 		"""
 		Training for PCA-GAN
 		"""
-		netD = self.netD
-		netG = self.netG
 		criterion = nn.BCELoss()
-		optimizerD = torch.optim.SGD(netD.parameters(), lr=self.params.lr)
-		optimizerG = torch.optim.SGD(netG.parameters(), lr=self.params.lr)
+		optimizerD = torch.optim.SGD(self.netD.parameters(), lr=self.params.lr)
+		optimizerG = torch.optim.SGD(self.netG.parameters(), lr=self.params.lr)
 		G_losses = []
 		D_losses = []
 		loader = self.data_to_loader()
@@ -127,14 +125,14 @@ class Run:
 		    for i, (x, y) in enumerate(loader):
 		        real_samples_labels = torch.ones((self.params.batch_size, 1))
 		        latent_space_samples = torch.randn((self.params.batch_size, self.params.random_dim))
-		        generated_samples = netG(latent_space_samples)
+		        generated_samples = self.netG(latent_space_samples)
 		        generated_samples_labels = torch.zeros((self.params.batch_size, 1))
 		        all_samples = torch.cat((x, generated_samples))
 		        all_samples_labels = torch.cat((real_samples_labels, generated_samples_labels))
 		        
 		        ## training the discriminator
-		        netD.zero_grad()
-		        output_discriminator = netD(all_samples)
+		        self.netD.zero_grad()
+		        output_discriminator = self.netD(all_samples)
 		        
 		        errD = criterion(output_discriminator, all_samples_labels)
 		        errD.backward()
@@ -142,9 +140,9 @@ class Run:
 		        
 		        ## training the generator
 		        latent_space_samples = torch.randn(self.params.batch_size, self.params.random_dim)
-		        netG.zero_grad()
-		        generated_samples = netG(latent_space_samples)
-		        outputDG = netD(generated_samples)
+		        self.netG.zero_grad()
+		        generated_samples = self.netG(latent_space_samples)
+		        outputDG = self.netD(generated_samples)
 		        errG = criterion(outputDG, real_samples_labels)
 		        errG.backward()
 		        optimizerG.step()
@@ -154,8 +152,8 @@ class Run:
 		        if (epoch % 5 == 0 and i + 1 == len(loader)):
 		        	print(f"Epoch{epoch} Loss D.: {errD}" "||" f"Loss G.: {errG}")
 
-		pickle.dump(netD, open(self.params.models_path / 'pca_netD.pkl', 'wb'))
-		pickle.dump(netG, open(self.params.models_path / 'pca_netG.pkl', 'wb'))
+		pickle.dump(self.netD, open(self.params.models_path / 'pca_netD.pkl', 'wb'))
+		pickle.dump(self.netG, open(self.params.models_path / 'pca_netG.pkl', 'wb'))
 		self.plot_losses(G_losses, 'G',  D_losses, 'D', 'losses_PCA', 'iteration', 'loss', self.params.images_path)
 
 	def pca_generate(self):
