@@ -1,0 +1,5 @@
+numpy==1.24.3
+dataclasses==0.8
+scikit-learn==1.0.2
+torch==2.0.1
+matplotlib==3.5.1
