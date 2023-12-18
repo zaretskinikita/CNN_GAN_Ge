@@ -32,7 +32,7 @@ The minimax GAN (with PCA preprocessing) or Wasserstein-GAN (with adversarial au
 
 
 ## 4. Usage
-Dependecies installation:
+Dependencies installation:
 
 ```SH
 pip install -r requirements.txt
