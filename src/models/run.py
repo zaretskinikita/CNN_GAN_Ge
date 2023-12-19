@@ -4,6 +4,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.autograd as autograd
 import pickle
+import random
 from pathlib import Path
 from matplotlib import pyplot as plt
 from src.utils.utils import energy_calculation, current_calculation, drifttime_calculation, \
@@ -103,6 +104,19 @@ class Run:
 		plt.title('Drift time: IoU = ' + str(metrics.get('drifttime')[2]))
 		plt.xlabel('time')
 		fig.savefig(self.params.images_path / Path('drifttime_' + model_type + '.png'))
+
+	def plot_pulses(self, pulses, model_type, title, color):
+		"""
+		Plots several samples
+		"""
+		fig, axis = plt.subplots(3, 3, figsize=(18.5, 10.5))
+		for i in range(3):
+		    for j in range(3):
+		        axis[i, j].plot(pulses[random.randint(0, len(pulses) - 1)], color = color)
+		plt.suptitle(title, fontsize=20)
+		fig.text(0.5, 0.06, 'time', ha='center')
+		fig.text(0.08, 0.5, 'a.u.', va='center', rotation='vertical')
+		fig.savefig(self.params.images_path / Path(model_type + '_' + title + '_pulses.png'))
 
 	@staticmethod
 	def plot_losses(loss_A, loss_A_name, loss_B, loss_B_name, title, xlabel, ylabel, savepath):

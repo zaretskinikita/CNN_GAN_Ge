@@ -35,6 +35,8 @@ class Pipeline(Parameters):
 				generated = processing.pca_postprocessing(generated)
 				# histograms with initial data and generated samples in initial space
 				run.plot_hists(processing.data, generated, 'pca')
+				run.plot_pulses(pulses=processing.data, model_type='pca', title='Real', color='red')
+				run.plot_pulses(pulses=generated, model_type='pca', title='Generated', color='black')
 
 			elif  Parameters.model_type == 'wgan':
 				processing = Processing(Parameters)
@@ -64,6 +66,8 @@ class Pipeline(Parameters):
 				generated = processing.wgan_postprocessing(generated)
 				# histograms with initial data and generated samples in initial space
 				run.plot_hists(processing.data, generated, 'wgan')
+				run.plot_pulses(pulses=processing.data, model_type='wgan', title='Real', color='red')
+				run.plot_pulses(pulses=generated, model_type='wgan', title='Generated', color='black')
 
 		elif Parameters.mode == 'generate':
 			if Parameters.model_type == 'pca':
@@ -80,6 +84,8 @@ class Pipeline(Parameters):
 				generated = run.pca_generate()
 				generated = processing.pca_postprocessing(generated)
 				run.plot_hists(processing.data, generated, 'pca')
+				run.plot_pulses(pulses=processing.data, model_type='pca', title='Real', color='red')
+				run.plot_pulses(pulses=generated, model_type='pca', title='Generated', color='black')
 
 			elif  Parameters.model_type == 'wgan':
 				processing = Processing(Parameters)
@@ -95,6 +101,8 @@ class Pipeline(Parameters):
 				generated = run.wgan_generate()
 				generated = processing.wgan_postprocessing(generated)
 				run.plot_hists(processing.data, generated, 'wgan')
+				run.plot_pulses(pulses=processing.data, model_type='wgan', title='Real', color='red')
+				run.plot_pulses(pulses=generated, model_type='wgan', title='Generated', color='black')
 
 
 if __name__ == '__main__':

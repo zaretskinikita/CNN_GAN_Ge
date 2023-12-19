@@ -13,8 +13,8 @@ class Parameters:
    num_samples: int = 1000 # number of generated samples
    random_seed: int = 99
 
-   model_type: str = 'wgan' # or 'wgan'
-   mode: str = 'train' # or generate
+   model_type: str = 'pca' # or 'pca' or 'wgan'
+   mode: str = 'train' # or 'train' or generate'
 
    # PCA-GAN parameters 
    if model_type == 'pca':
