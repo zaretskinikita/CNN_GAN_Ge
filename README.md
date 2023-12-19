@@ -45,6 +45,8 @@ pip install -r requirements.txt
 ```
 
 Parameters can be set manually in the src/config/config.py
+	* **model_type**: 'pca' (minimax-GAN, data is preprocessed using PCA) or 'wgan' (Wassesstein-GAN, data is encoded with the pretrained adversarial autoencoder)
+ 	* **mode**: 'train' (training and generating 'num_samples' number of samples) or 'generate' (generating 'num_samples' number of samples if trained generator models and artefacts are saved in according directories)
 
 How to run:
 
