@@ -1,5 +1,7 @@
 import numpy as np
 from src.config.config import Parameters
+import torch
+import torch.autograd as autograd
 
 def energy_calculation(arr):
 	return np.max(arr, axis = 1) - np.min(arr, axis = 1)
@@ -60,3 +62,28 @@ def calculate_iou(h1,h2, bins=50):
     union = np.sum(np.maximum(count,count2))
         
     return intersection/union*100.0
+
+# functions for wgan
+def inf_train_gen(train_loader):
+    while True:
+        for images,targets in train_loader:
+            yield images
+
+def calc_gradient_penalty(netD, real_data, fake_data, batch_size, LAMBDA):
+    alpha = torch.rand(batch_size, 1)
+    alpha = alpha.expand(real_data.size())
+    alpha = alpha
+
+    interpolates = alpha * real_data + ((1 - alpha) * fake_data)
+
+    interpolates = interpolates
+    interpolates = autograd.Variable(interpolates, requires_grad=True)
+
+    disc_interpolates = netD(interpolates)
+
+    gradients = autograd.grad(outputs=disc_interpolates, inputs=interpolates,
+                              grad_outputs=torch.ones(disc_interpolates.size()),
+                              create_graph=True, retain_graph=True, only_inputs=True)[0]
+
+    gradient_penalty = ((gradients.norm(2, dim=1) - 1) ** 2).mean() * LAMBDA
+    return gradient_penalty
